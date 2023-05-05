@@ -3,11 +3,11 @@
 #include "baseball.c"
 #include "est_pos.c"
 
-#define ITERATIONS 100
-#define THRESHOLD 0.1
+#define ITERATIONS 1000000
+#define THRESHOLD 0.5
 #define WIDTH 200
 #define HEIGHT 200
-#define FREQ 1
+#define FREQ 3.25
 
 struct est_pos estimate_position(struct baseball b);
 
@@ -15,6 +15,8 @@ int main()
 {
     double precision_x = 0.0;
     double precision_y = 0.0;
+    double average_hits_x = 0.0;
+    double average_hits_y = 0.0;
 
     for (int i = 0; i < ITERATIONS; i++) {
         struct baseball b;
@@ -34,10 +36,16 @@ int main()
         if ( b.y - p.y < THRESHOLD) {
             precision_y++;
         }
+
+        average_hits_x += p.hits_x;
+        average_hits_y += p.hits_y;
     }
 
     printf("Precision X: %.2f %%\n", (precision_x / ITERATIONS) * 100);
     printf("Precision Y: %.2f %%\n", (precision_y / ITERATIONS) * 100);
+
+    printf("Average Hits X: %.2f\n", (average_hits_x / ITERATIONS));
+    printf("Average Hits Y: %.2f\n", (average_hits_y / ITERATIONS));
 
     return 0;
 }
